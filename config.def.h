@@ -10,7 +10,6 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray             = 1;   /* 0 means no systray */
 static const char *fonts[]          = { "JetBrains Mono:size=14", "LXGW WenKai Mono:size=14" };
-static const char dmenufont[]       = "monospace:size=10";
 #define COL_NB_HARD     "#1d2021"
 #define COL_NB          "#282828"
 #define COL_NF          "#a89984"
@@ -62,27 +61,45 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod1Mask
+/*
+   用 Windows 键作为 ModKey
+   之后可以在重映射 Alt 与 Windows 键位置
+   避免 Alt 相关冲突
+   映射(Xmodmap)见 https://gist.github.com/zpyg/9b2af4b2cc3416e4efbedb3879d387f9
+*/
+#define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
 	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
-
-/* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+// 快速运行程序
+#define RUN(program, ...) { .v = (const char*[]) {program, __VA_ARGS__} }
+// 使用 st 运行
+#define TERM_RUN(program, ...) { .v = (const char*[]) {"st", "-e", program, __VA_ARGS__} }
+// 电源控制，需允许 systemctl 无需密码
+#define SYSCTL(action) RUN("sudo", "systemctl", action, NULL)
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", COL_NB, "-nf", COL_NF, "-sb", COL_SB, "-sf", COL_SF, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[] = {"st", NULL};
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+    { MODKEY,                       XK_e,      spawn,          TERM_RUN("vifmrun", NULL) },
+	{ ControlMask|ShiftMask,        XK_Escape, spawn,          TERM_RUN("bpytop", NULL) },
+	{ MODKEY|ShiftMask,             XK_s,      spawn,          RUN("flameshot", "gui", NULL) },
+    { MODKEY,                       XK_v,      spawn,          RUN("diodon", NULL) },
+	{ MODKEY,                       XK_F1,     spawn,          SYSCTL("poweroff") },
+	{ MODKEY,                       XK_F2,     spawn,          SYSCTL("reboot") },
+	{ MODKEY,                       XK_F3,     spawn,          SYSCTL("suspend") },
+	{ MODKEY,                       XK_F4,     spawn,          RUN("slock", NULL) },
+
+	{ MODKEY,                       XK_p,      spawn,          RUN("rofi", "-show", "run", NULL)},
+	{ MODKEY|ShiftMask,             XK_Escape, killclient,     {0} },
+
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd} },
 	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
 	{ MODKEY,                       XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
@@ -93,7 +110,6 @@ static Key keys[] = {
 	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
 	{ MODKEY,                       XK_Return, zoom,           {0} },
 	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
 	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
