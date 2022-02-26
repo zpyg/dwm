@@ -1,0 +1,168 @@
+.TH DWM 1 dwm\-VERSION
+.SH 名称
+dwm \- 动态窗口管理器
+.SH 概述
+.B dwm
+.RB [ \-v ]
+.SH 描述
+dwm 是一个 X 下的窗口管理器。有平铺、独占和浮动三种布局。布局能动态应用于窗口，根据需要排列窗口。
+.P
+.BR 平铺模式
+中，桌面分为主区域和堆叠区。左侧为主区域，默认显示一个窗口；右侧为堆叠区，显示其余窗口。主区域的窗口数量可以调整为从〇到任意值。
+.BR 浮动模式
+中，窗口可以自由移动和拉伸。对话窗口以浮动模式显示，不受任何布局影响。
+.BR 独占模式
+中，最大化显示焦点窗口。
+.P
+窗口以标签分组。每个窗口可以在一个多或多个标签显示。选中某些标签后，选中的标签会高亮，其中的窗口会同时显示于桌面。
+.P
+桌面顶部为任务栏，显示可用标签、当前布局、焦点窗口标题和状态栏，状态栏默认显示\ X\ 根窗口名。
+.P
+在窗口标题前，空方块表示浮动窗口，实方块表示不可改变大小的浮动窗口。在标签左上方，空方块表示应用于一个或多个窗口的标签，实方块表示焦点窗口的标签。
+.P
+dwm 会在窗口周围绘制一个边框表示焦点状态。
+.P
+dwm 启动时可以运行一些程序，你可以写一个 shell 脚本运行程序（见下方 FILE 节）。
+.SH 选项
+.TP
+.B \-v
+输出版本信息到 stderr 后退出。
+.SH 用法
+.SS 状态栏
+.TP
+.B X 根窗口名
+状态栏内容，可以使用
+.BR xsetroot (1)
+设置。
+.TP
+.B 鼠标左键
+切换到点击标签。点击当前布局可以切换平铺与浮动布局。
+.TP
+.B 鼠标右键
+选中标签，再次点击取消选择。
+.TP
+.B Alt\-鼠标左键
+移动当前标签下的焦点窗口到点击标签。
+.TP
+.B Alt\-鼠标右键
+扩展当前标签下的焦点窗口到点击标签，再次点击取消扩展。
+.SS 快捷键
+.TP
+.B Alt\-Shift\-回车
+启动
+.BR st(1)。
+.TP
+.B Alt\-p
+启动
+.BR dmenu(1)
+运行其他程序。
+.TP
+.B Alt\-,
+如果有多个屏幕，切换到上一个屏幕。
+.TP
+.B Alt\-.
+如果有多个屏幕，切换到下一个屏幕。
+.TP
+.B Alt\-Shift\-,
+如果有多个屏幕，移动焦点窗口至上一个屏幕。
+.TP
+.B Alt\-Shift\-.
+如果有多个屏幕，移动焦点窗口至下一个屏幕。
+.TP
+.B Alt\-b
+开关状态栏。
+.TP
+.B Alt\-t
+切换到平铺模式。
+.TP
+.B Alt\-f
+切换到浮动模式。
+.TP
+.B Alt\-m
+切换到独占模式。
+.TP
+.B Alt\-空格
+切换最近使用的布局与当前布局。
+.TP
+.B Alt\-j
+将焦点移动到下一个窗口。
+.TP
+.B Alt\-k
+将焦点移动到上一个窗口。
+.TP
+.B Alt\-i
+增加主区域窗口数量。
+.TP
+.B Alt\-d
+减少主区域窗口数量。
+.TP
+.B Alt\-l
+增加主区域大小。
+.TP
+.B Alt\-h
+减小主区域大小。
+.TP
+.B Alt\-回车
+将焦点窗口在主区域与堆叠区之间切换（限平铺模式）。
+.TP
+.B Alt\-Shift\-c
+关闭焦点窗口。
+.TP
+.B Alt\-Shift\-空格
+将焦点窗口在平铺状态与浮动状态之间切换。
+.TP
+.B Alt\-Tab
+切换到最近选择的标签。
+.TP
+.B Alt\-Shift\-[1..n]
+移动焦点窗口至第n个标签。
+.TP
+.B Alt\-Shift\-0
+扩展焦点窗口至所有标签。
+.TP
+.B Alt\-Control\-Shift\-[1..n]
+扩展焦点窗口至第n个标签。再次取消。
+.TP
+.B Alt\-[1..n]
+切换到第n个标签。
+.TP
+.B Alt\-0
+选中所有标签。
+.TP
+.B Alt\-Control\-[1..n]
+选中第n个标签。
+.TP
+.B Alt\-Shift\-q
+退出 dwm。
+.SS 鼠标命令
+.TP
+.B Alt\-Button1
+拖动选中窗口。平铺窗口将转为浮动状态。
+.TP
+.B Alt\-Button2
+将选中窗口在平铺状态与浮动状态之间切换。
+.TP
+.B Alt\-Button3
+改变选中窗口大小。平铺窗口将转为浮动状态。
+.SH 文件
+脚本文件存放在“~/.config/dwm”，你可以在其中写一个“autostart.sh”启动程序。该文件在 dwm 进入其事件循环前作为 shell 后台程序启动。
+.SH 定制
+dwm 通过创建自己的 config.h 然后重新编译源代码来定制。这使之快速、安全且简单。
+.SH 亦见
+.BR dmenu (1),
+.BR st (1)
+.SH 问题
+Java applications which use the XToolkit/XAWT backend may draw grey windows only. The XToolkit/XAWT backend breaks ICCCM-compliance in recent JDK 1.5 and early
+JDK 1.6 versions, because it assumes a reparenting window manager. Possible workarounds
+are using JDK 1.4 (which doesn't contain the XToolkit/XAWT backend) or setting the
+enviro
+.BR AWT_TOOLKIT=MToolkit
+(to use the older Motif backend instead) or running
+.B xprop -root -f _NET_WM_NAME 32a -set _NET_WM_NAME LG3D
+or
+.B wmname LG3D
+(to pretend that a non-reparenting window manager is running that the
+XToolkit/XAWT backend can recognize) or when using OpenJDK setting the environment variable
+.BR _JAVA_AWT_WM_NONREPARENTING=1 .
+.SH 缺陷
+将所有带有补丁的错误报告发送至 hackers@suckless.org。
