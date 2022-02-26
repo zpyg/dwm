@@ -2682,6 +2682,7 @@ main(int argc, char *argv[])
 		die("pledge");
 #endif /* __OpenBSD__ */
 	scan();
+	system("~/.config/dwm/autostart.sh > /tmp/autostart.log 2>&1 &");
 	run();
 	cleanup();
 	XCloseDisplay(dpy);
