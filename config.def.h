@@ -11,17 +11,23 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray             = 1;   /* 0 means no systray */
 static const char *fonts[]          = { "JetBrains Mono:size=14", "LXGW WenKai Mono:size=14" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+#define COL_NB_HARD     "#1d2021"
+#define COL_NB          "#282828"
+#define COL_NF          "#a89984"
+#define COL_SB          "#689d6a"
+#define COL_SF          "#ebdbb2"
+#define COL_NULL        "#000000"
 static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	/*                     fg         bg         border   */
+	[SchemeNorm]       = { COL_NF, COL_NB,      COL_SB },
+	[SchemeSel]        = { COL_NF, COL_NB,      COL_SB},
+	[SchemeStatus]     = { COL_NF, COL_NB,      COL_SB }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeTagsSel]    = { COL_NB, COL_SB,      COL_NULL },// Tagbar left selected {text,background,not used but cannot be empty}
+    [SchemeTagsNorm]   = { COL_NF, COL_NB_HARD, COL_NULL }, // Tagbar left unselected {text,background,not used but cannot be empty}
+    [SchemeInfoSel]    = { COL_SF, COL_NB,      COL_NULL },// infobar middle  selected {text,background,not used but cannot be empty}
+    [SchemeInfoNorm]   = { COL_NF, COL_NB,      COL_NULL }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
 static const unsigned int alphas[][3]      = {
 	/*               fg      bg        border     */
@@ -68,7 +74,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", COL_NB, "-nf", COL_NF, "-sb", COL_SB, "-sf", COL_SF, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "120x34", NULL };
