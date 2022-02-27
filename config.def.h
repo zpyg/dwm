@@ -9,7 +9,7 @@ static const unsigned int systraypinning = 0;   /* 0: sloppy systray follows sel
 static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray             = 1;   /* 0 means no systray */
-static const char *fonts[]          = { "JetBrains Mono:size=14", "LXGW WenKai Mono:size=14" };
+static const char *fonts[]          = { "JetBrains Mono:size=13", "LXGW WenKai Mono:size=13" };
 #define COL_NB_HARD     "#1d2021"
 #define COL_NB          "#282828"
 #define COL_NF          "#a89984"
