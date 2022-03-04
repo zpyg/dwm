@@ -20,11 +20,11 @@ static const unsigned int baralpha = 0xd0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]      = {
 	/*                     fg         bg         border   */
-	[SchemeNorm]       = { COL_NF, COL_NB,      COL_SB },
+	[SchemeNorm]       = { COL_NF, COL_NB,      COL_NULL},
 	[SchemeSel]        = { COL_NF, COL_NB,      COL_SB},
-	[SchemeStatus]     = { COL_NF, COL_NB,      COL_SB }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeStatus]     = { COL_SF, COL_NB_HARD, COL_SB }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsSel]    = { COL_NB, COL_SB,      COL_NULL },// Tagbar left selected {text,background,not used but cannot be empty}
-    [SchemeTagsNorm]   = { COL_NF, COL_NB_HARD, COL_NULL }, // Tagbar left unselected {text,background,not used but cannot be empty}
+    [SchemeTagsNorm]   = { COL_NF, COL_NB,      COL_NULL }, // Tagbar left unselected {text,background,not used but cannot be empty}
     [SchemeInfoSel]    = { COL_SF, COL_NB,      COL_NULL },// infobar middle  selected {text,background,not used but cannot be empty}
     [SchemeInfoNorm]   = { COL_NF, COL_NB,      COL_NULL }, // infobar middle  unselected {text,background,not used but cannot be empty}
 };
